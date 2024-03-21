@@ -1,0 +1,5 @@
+name: VoidSurvival
+version: '${version}'
+main: com.awokens.voidsurvival.VoidSurvival
+api-version: '1.20'
+authors: [Awokens]
