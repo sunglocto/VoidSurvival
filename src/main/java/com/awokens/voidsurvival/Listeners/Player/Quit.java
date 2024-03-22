@@ -1,5 +1,6 @@
 package com.awokens.voidsurvival.Listeners.Player;
 
+import com.awokens.voidsurvival.VoidSurvival;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -13,6 +14,9 @@ public class Quit implements Listener {
     public void quit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
+
+        VoidSurvival.getMapResetScheduler().getMapResetBar().removePlayer(player);
+
         Entity vehicle = player.getVehicle();
 
         if (vehicle == null) return;
