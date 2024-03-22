@@ -1,6 +1,6 @@
 package com.awokens.voidsurvival.Listeners.Player;
 
-import com.awokens.voidsurvival.Manager.SpawnPoints;
+import com.awokens.voidsurvival.Manager.SpawnPointManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -58,9 +58,9 @@ public class WorldGuard implements Listener {
         World world = null;
 
         switch (type) {
-            case WORLD -> world = SpawnPoints.getWorldSpawn().getWorld();
-            case NETHER -> world = SpawnPoints.getNetherSpawn().getWorld();
-            case END -> world = SpawnPoints.getEndSpawn().getWorld();
+            case WORLD -> world = SpawnPointManager.getWorldSpawn().getWorld();
+            case NETHER -> world = SpawnPointManager.getNetherSpawn().getWorld();
+            case END -> world = SpawnPointManager.getEndSpawn().getWorld();
         }
 
         if (world == null) return false;
@@ -68,7 +68,7 @@ public class WorldGuard implements Listener {
         return inBound(
                 location,
                 new Location(world, 2.5, -64, 2.5),
-                new Location(world, -1.5, -61, -1.5)
+                new Location(world, -2, -61, -2)
 
         );
     }
