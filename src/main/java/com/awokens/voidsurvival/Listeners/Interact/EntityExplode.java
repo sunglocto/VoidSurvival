@@ -1,6 +1,6 @@
 package com.awokens.voidsurvival.Listeners.Interact;
 
-import com.awokens.voidsurvival.Manager.TNTTrail;
+import com.awokens.voidsurvival.Manager.TNTTrailManager;
 import com.awokens.voidsurvival.VoidSurvival;
 import org.bukkit.block.Block;
 import org.bukkit.entity.TNTPrimed;
@@ -16,9 +16,9 @@ public class EntityExplode implements Listener {
 
         event.setCancelled(true);
 
-        for (Block connectedBlock : TNTTrail.getConnectedBlocks(tnt.getLocation().getBlock())) {
-            if (TNTTrail.isRelative(connectedBlock)) {
-                new TNTTrail(VoidSurvival.getPlugin(), connectedBlock, 60);
+        for (Block connectedBlock : TNTTrailManager.getConnectedBlocks(tnt.getLocation().getBlock())) {
+            if (TNTTrailManager.isRelative(connectedBlock)) {
+                new TNTTrailManager(VoidSurvival.getPlugin(), connectedBlock, 60);
                 break;
             }
         }
