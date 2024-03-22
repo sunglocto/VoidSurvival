@@ -13,12 +13,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
 
+import static java.awt.Color.green;
+
 public class Join implements Listener {
 
     @EventHandler
     public void join(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
+
+        if (VoidSurvival.getLuckPermsUtils().hasBossBarToggled(player)) {
+            VoidSurvival.getMapResetScheduler().getMapResetBar().addPlayer(player);
+        }
 
         final Component header = MiniMessage.miniMessage().deserialize(
                 "<newline><white><b>VOID SURVIVAL</b></white><newline>"
@@ -101,6 +107,16 @@ public class Join implements Listener {
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 0.2F, 1F);
                 player.playSound(player, Sound.ENTITY_PLAYER_SPLASH_HIGH_SPEED, 0.2F , 1F);
                 player.playSound(player, Sound.BLOCK_NOTE_BLOCK_IMITATE_ENDER_DRAGON, 0.5F, 1F);
+
+                player.sendMessage(MiniMessage.miniMessage().deserialize(
+                        "<newline><b>VOID SURVIVAL</b><newline><newline>"
+                        + "→ To view all commands <green>/commands</green><newline>"
+                        + "→ To toggle specifics <green>/toggle <type></green><newline><newline>"
+                        + "Haven't join our Discord yet?<newline>"
+                        + "→ <color:#308aff><click:open_url:'https://discord.gg/q3BRbWqHgx'>Click this message to join today</click></color><newline>"
+                ));
+
+
             }
         }.runTaskLater(VoidSurvival.getPlugin(), letterDelay);
     }
