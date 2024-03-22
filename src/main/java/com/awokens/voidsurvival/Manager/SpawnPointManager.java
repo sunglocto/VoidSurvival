@@ -3,7 +3,7 @@ package com.awokens.voidsurvival.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-public class SpawnPoints {
+public class SpawnPointManager {
 
     public static Location getWorldSpawn() {
         return new Location(Bukkit.getWorld("world"),0.5, -63, 0.5);
