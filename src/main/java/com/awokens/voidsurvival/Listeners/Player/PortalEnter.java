@@ -1,6 +1,6 @@
 package com.awokens.voidsurvival.Listeners.Player;
 
-import com.awokens.voidsurvival.Manager.SpawnPoints;
+import com.awokens.voidsurvival.Manager.SpawnPointManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,8 +17,8 @@ public class PortalEnter implements Listener {
         Player player = event.getPlayer();
 
         switch (player.getWorld().getName()) {
-            case "world_nether" -> player.teleport(SpawnPoints.getNetherSpawn());
-            case "world" -> player.teleport(SpawnPoints.getWorldSpawn());
+            case "world_nether" -> player.teleport(SpawnPointManager.getNetherSpawn());
+            case "world" -> player.teleport(SpawnPointManager.getWorldSpawn());
         }
     }
 
