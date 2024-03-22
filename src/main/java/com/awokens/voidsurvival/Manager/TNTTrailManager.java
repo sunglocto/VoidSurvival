@@ -1,25 +1,15 @@
 package com.awokens.voidsurvival.Manager;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
-public class TNTTrail {
+public class TNTTrailManager {
 
     // blocks that connected between other related blocks
     // if obsidian block is in between a -> b. Then we cannot
@@ -34,7 +24,7 @@ public class TNTTrail {
 
     private final int max_counter = 100;
 
-    public TNTTrail(Plugin plugin, Block startBlock, int counter) {
+    public TNTTrailManager(Plugin plugin, Block startBlock, int counter) {
         this.relatives = new HashSet<>();
         this.plugin = plugin;
         this.counter = Math.min(counter, max_counter);
