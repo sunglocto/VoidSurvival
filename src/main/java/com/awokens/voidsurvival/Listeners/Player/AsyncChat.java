@@ -13,7 +13,7 @@ public class AsyncChat implements Listener {
     public void chat(AsyncChatEvent event) {
 
 
-        if (event.isCancelled()) return;;
+        if (event.isCancelled()) return;
 
         event.setCancelled(true);
 

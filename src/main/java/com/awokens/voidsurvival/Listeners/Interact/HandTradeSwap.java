@@ -56,8 +56,6 @@ public class HandTradeSwap implements Listener {
         }
 
         double diff = (new Date().getTime() - last) / 100;
-        Bukkit.broadcast(Component.text(diff));
-
         if (diff <= 0.5) {
 
             ItemStack first = player.getInventory().getItemInMainHand().clone();

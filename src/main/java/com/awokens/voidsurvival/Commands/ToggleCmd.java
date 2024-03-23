@@ -2,11 +2,7 @@ package com.awokens.voidsurvival.Commands;
 
 import com.awokens.voidsurvival.VoidSurvival;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.ArgumentSuggestions;
-import dev.jorel.commandapi.arguments.BooleanArgument;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 
 public class ToggleCmd {
 

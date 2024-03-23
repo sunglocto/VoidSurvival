@@ -1,14 +1,13 @@
 package com.awokens.voidsurvival.Commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
 public class NonchestCmd {
 
-    private Inventory nonchest;
+    private final Inventory nonchest;
 
     public NonchestCmd() {
 

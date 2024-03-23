@@ -9,10 +9,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
@@ -25,14 +22,26 @@ public class RecipeManager {
     private final Plugin plugin;
     private final Map<NamespacedKey, ShapedRecipe> recipes;
 
-    private final Map<ItemStack, List<Material>> ingredients;
+    private final Map<ItemStack, List<Material>> craftIngredients;
 
-    private SGMenu RecipeMenu;
+    private final Map<ItemStack, Material> furnaceIngredients;
+
+    private final SGMenu RecipeMenu;
 
     public RecipeManager(Plugin plugin) {
         this.plugin = plugin;
         this.recipes = new HashMap<>();
-        this.ingredients = new HashMap<>();
+        this.craftIngredients = new HashMap<>();
+        this.furnaceIngredients = new HashMap<>();
+
+        addFurnaceRecipe("steak", new ItemStack(Material.COOKED_BEEF), Material.ROTTEN_FLESH, 1.0f, 140);
+        addFurnaceRecipe("golden_helmet_nuggets", new ItemStack(Material.GOLD_NUGGET, 5), Material.GOLDEN_HELMET, 1.0F, 140);
+        addFurnaceRecipe("golden_chestplate_nuggets", new ItemStack(Material.GOLD_NUGGET, 8), Material.GOLDEN_CHESTPLATE, 1.0F, 140);
+        addFurnaceRecipe("golden_leggings_nuggets", new ItemStack(Material.GOLD_NUGGET, 7), Material.GOLDEN_LEGGINGS, 1.0F, 140);
+        addFurnaceRecipe("golden_boots_nuggets", new ItemStack(Material.GOLD_NUGGET, 4), Material.GOLDEN_BOOTS, 1.0F, 140);
+        addFurnaceRecipe("blackstone", new ItemStack(Material.BLACKSTONE), Material.COBBLED_DEEPSLATE, 1.0F, 280);
+
+
 
         addShapedRecipe("tuff",
                 new ItemStack(Material.TUFF),
@@ -67,14 +76,14 @@ public class RecipeManager {
 
         this.RecipeMenu = VoidSurvival.getSpiGUI().create("&8Recipes", 6);
 
-        for (ItemStack result : ingredients.keySet()) {
-            List<Material> materials = ingredients.get(result);
+        for (ItemStack result : craftIngredients.keySet()) {
+            List<Material> materials = craftIngredients.get(result);
 
             SGButtonListener revealRecipe = event -> {
                 // open new gui with the recipe of the result
 
                 int[] craftingSlots = { 10, 11, 12, 19, 20, 21, 28, 29, 30 };
-                SGMenu revealRevealMenu = VoidSurvival.getSpiGUI().create("&8Recipe", 5);
+                SGMenu revealRevealMenu = VoidSurvival.getSpiGUI().create("&8Crafting Recipe", 5);
 
                 for (int i = 0; i < 45; i++) {
                     revealRevealMenu.setButton(i, new SGButton(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
@@ -110,6 +119,45 @@ public class RecipeManager {
             SGButton button = new SGButton(result).withListener(revealRecipe);
             this.RecipeMenu.addButton(button);
         }
+        for (ItemStack result : furnaceIngredients.keySet()) {
+            Material material = furnaceIngredients.get(result);
+
+            SGButtonListener revealRecipe = event -> {
+
+                int[] furnaceSlots = { 10, 11, 12, 19, 20, 21, 28, 29, 30 };
+                SGMenu revealRevealMenu = VoidSurvival.getSpiGUI().create("&8Furnace Recipe", 5);
+
+                for (int i = 0; i < 45; i++) {
+                    revealRevealMenu.setButton(i, new SGButton(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
+                }
+
+                for (int furnaceSlot : furnaceSlots) {
+                    revealRevealMenu.setButton(furnaceSlot, new SGButton(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)));
+                }
+
+                ItemStack item = new ItemStack(Material.RED_DYE);
+                ItemMeta meta = item.getItemMeta();
+                meta.displayName(MiniMessage.miniMessage().deserialize(
+                        "<red>Go back"
+                ).decoration(TextDecoration.ITALIC, false));
+
+                item.setItemMeta(meta);
+
+                SGButtonListener listener = event1 -> {
+                    event1.getWhoClicked().openInventory(this.getRecipeMenu());
+                };
+
+                SGButton back = new SGButton(item).withListener(listener);
+
+                revealRevealMenu.setButton(40, back);
+                revealRevealMenu.setButton(24, new SGButton(result));
+                revealRevealMenu.setButton(20, new SGButton(new ItemStack(material)));
+
+                event.getWhoClicked().openInventory(revealRevealMenu.getInventory());
+            };
+            SGButton button = new SGButton(result).withListener(revealRecipe);
+            this.RecipeMenu.addButton(button);
+        }
     }
 
     public Inventory getRecipeMenu() {
@@ -127,7 +175,7 @@ public class RecipeManager {
             throw new RuntimeException("This shaped recipe " + keyName + " requires 9 materials, but only found " + materials.size());
         }
 
-        ingredients.put(result, materials);
+        craftIngredients.put(result, materials);
 
         NamespacedKey key = new NamespacedKey(plugin, keyName);
 
@@ -170,6 +218,15 @@ public class RecipeManager {
         Bukkit.addRecipe(recipe);
     }
 
+    @SuppressWarnings("unused")
+    public void addFurnaceRecipe(String keyName, ItemStack result, Material input, float experience, int cookingTime) {
+
+        furnaceIngredients.put(result, input);
+        NamespacedKey key = new NamespacedKey(plugin, keyName);
+        FurnaceRecipe recipe = new FurnaceRecipe(key, result, input, experience, cookingTime);
+        Bukkit.addRecipe(recipe);
+    }
+
     public void addShapelessRecipe(String keyName, ItemStack result, List<Material> materials) {
 
         NamespacedKey key = new NamespacedKey(plugin, keyName);
@@ -194,6 +251,7 @@ public class RecipeManager {
         Bukkit.addRecipe(recipe);
     }
 
+    @SuppressWarnings("unused")
     public void removeRecipe(String keyName) {
         NamespacedKey key = new NamespacedKey(plugin, keyName);
         ShapedRecipe removedRecipe = recipes.remove(key);

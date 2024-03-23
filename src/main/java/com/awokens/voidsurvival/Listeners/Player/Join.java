@@ -13,8 +13,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
 
-import static java.awt.Color.green;
-
 public class Join implements Listener {
 
     @EventHandler

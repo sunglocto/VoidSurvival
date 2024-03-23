@@ -2,21 +2,11 @@ package com.awokens.voidsurvival.Commands;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.ExecutableCommand;
 import dev.jorel.commandapi.RegisteredCommand;
-import jdk.jfr.Registered;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import static net.kyori.adventure.text.Component.text;
 
 public class CommandsCmd {
 

@@ -13,9 +13,9 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.concurrent.TimeUnit;
 
 public class WorldResetManager {
-    private BukkitTask task;
+    private final BukkitTask task;
 
-    private BossBar mapResetBar;
+    private final BossBar mapResetBar;
 
     public WorldResetManager() {
 

@@ -1,6 +1,7 @@
 package com.awokens.voidsurvival.Manager;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -49,20 +50,33 @@ public class TNTTrailManager {
     public static boolean isRelative(Block block) {
         if (!block.getType().isSolid()) return false;
         double hardness = block.getType().getHardness();
-        return !(hardness >= 3.0F) && !(hardness < 0.3F);
+
+        return switch (block.getType()) {
+            case TUFF, COBBLED_DEEPSLATE -> true;
+            default -> !(hardness >= 3.0F) && !(hardness < 0.3F);
+        };
+
     }
 
     private void trail(Block next) {
 
         for (Block connectedBlock : getConnectedBlocks(next)) {
 
-            if (this.counter < 1 || this.counter > max_counter) break;
+            if (this.counter < 0 || this.counter > max_counter) break;
 
             if (!isRelative(connectedBlock)) continue;
 
             Location location = connectedBlock.getLocation();
 
             if (this.relatives.contains(location)) continue;
+
+            int tier = switch (connectedBlock.getType()) {
+                case TUFF -> 2;
+                case COBBLED_DEEPSLATE -> 3;
+                default -> 1;
+            };
+
+            if (this.counter - tier < 0) return;
 
             connectedBlock.breakNaturally(true);
 
@@ -73,7 +87,7 @@ public class TNTTrailManager {
 
             this.relatives.add(location);
 
-            this.counter -= 1;
+            this.counter -= tier;
 
             new BukkitRunnable() {
                 @Override

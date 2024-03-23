@@ -3,7 +3,6 @@ package com.awokens.voidsurvival.Commands;
 import dev.jorel.commandapi.CommandAPICommand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 public class Respawn {
 
