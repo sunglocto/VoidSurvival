@@ -1,8 +1,13 @@
 package com.awokens.voidsurvival.Listeners.Player;
 
+import com.awokens.voidsurvival.VoidSurvival;
+import com.samjakob.spigui.buttons.SGButton;
+import com.samjakob.spigui.menu.SGMenu;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.chat.hover.content.Item;
@@ -75,9 +80,12 @@ public class Chat implements Listener {
 
         BundleMeta meta = (BundleMeta) bundle.getItemMeta();
 
+
+        SGMenu snapshot = VoidSurvival.getSpiGUI().create("&8Inventory Snapshot", 5);
         for (ItemStack item : items) {
             if (item == null || item.isEmpty()) continue;
             meta.addItem(item);
+            snapshot.addButton(new SGButton(item));
         }
 
         meta.displayName(MiniMessage.miniMessage().deserialize(
@@ -86,13 +94,17 @@ public class Chat implements Listener {
 
         bundle.setItemMeta(meta);
 
-        HoverEvent<HoverEvent.ShowItem> hover = Bukkit.getItemFactory().asHoverEvent(bundle,
-                showItem -> showItem);
+        for (Player individual : Bukkit.getOnlinePlayers()) {
+            HoverEvent<HoverEvent.ShowItem> hover = Bukkit.getItemFactory().asHoverEvent(bundle,
+                    showItem -> showItem);
 
-        final Component component = MiniMessage.miniMessage().deserialize(
-                "<gray>"+ player.getName() + ": " + "<gray>[" + "<yellow>Inventory Snapshot<gray>]"
-        ).hoverEvent(hover);
-
-        Bukkit.broadcast(component);
+            final Component component = MiniMessage.miniMessage().deserialize(
+                            "<gray>"+ player.getName() + ": " + "<gray>[" + "<yellow>Inventory Snapshot<gray>]")
+                    .hoverEvent(hover)
+                    .clickEvent(ClickEvent.callback((callback) -> {
+                        individual.openInventory(snapshot.getInventory());
+                    }));
+            individual.sendMessage(component);
+        }
     }
 }
