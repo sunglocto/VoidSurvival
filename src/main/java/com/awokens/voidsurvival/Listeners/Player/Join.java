@@ -4,12 +4,14 @@ import com.awokens.voidsurvival.VoidSurvival;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 
 import java.time.Duration;
 
@@ -19,6 +21,10 @@ public class Join implements Listener {
     public void join(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
+
+        if (!VoidSurvival.getCollisionTeam().hasPlayer(player)) {
+            VoidSurvival.getCollisionTeam().addPlayer(player);
+        }
 
         if (VoidSurvival.getLuckPermsUtils().hasBossBarToggled(player)) {
             VoidSurvival.getMapResetScheduler().getMapResetBar().addPlayer(player);
