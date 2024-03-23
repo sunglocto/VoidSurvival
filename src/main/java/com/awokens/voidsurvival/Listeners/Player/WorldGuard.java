@@ -3,12 +3,15 @@ package com.awokens.voidsurvival.Listeners.Player;
 import com.awokens.voidsurvival.Manager.SpawnPointManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
@@ -21,9 +24,18 @@ public class WorldGuard implements Listener {
     }
 
     @EventHandler
-    public void damage(EntityDamageEvent event) {
+    public void self(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (inProtectedRegion(player.getLocation())) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void other(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (!(event.getDamager() instanceof Player attacker)) return;
+
+        if (inProtectedRegion(victim.getLocation())) event.setCancelled(true);
+        if (inProtectedRegion(attacker.getLocation())) event.setCancelled(true);
     }
 
     @EventHandler
@@ -34,9 +46,18 @@ public class WorldGuard implements Listener {
 
     @EventHandler
     public void physics(BlockPhysicsEvent event) {
-        if (inProtectedRegion(event.getBlock().getLocation())) event.setCancelled(true);
+        if (!inProtectedRegion(event.getBlock().getLocation())) return;
+
+        if (!event.getBlock().isLiquid()) return;
+
+        event.getSourceBlock().setType(Material.AIR);
+
     }
 
+    @EventHandler
+    public void fertilize(BlockFertilizeEvent event) {
+        if (inProtectedRegion(event.getBlock().getLocation())) event.setCancelled(true);
+    }
 
     private enum WorldType {
         WORLD,
