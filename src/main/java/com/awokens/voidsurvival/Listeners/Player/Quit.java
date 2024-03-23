@@ -14,6 +14,10 @@ public class Quit implements Listener {
 
         Player player = event.getPlayer();
 
+        if (VoidSurvival.getCollisionTeam().hasPlayer(player)) {
+            VoidSurvival.getCollisionTeam().removePlayer(player);
+        }
+
         VoidSurvival.getMapResetScheduler().getMapResetBar().removePlayer(player);
 
         Entity vehicle = player.getVehicle();
