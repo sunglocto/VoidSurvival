@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Death implements Listener {
 
@@ -27,6 +29,10 @@ public class Death implements Listener {
 
     @EventHandler
     public void respawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 1, false, false, false));
+
         if (!event.isBedSpawn()) {
             event.setRespawnLocation(SpawnPointManager.getWorldSpawn());
         }

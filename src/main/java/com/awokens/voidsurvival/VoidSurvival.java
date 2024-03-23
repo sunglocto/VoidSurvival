@@ -103,7 +103,7 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
                 new GodVillager(),
                 new Quit(),
                 new Join(),
-                new AsyncChat(),
+                new Chat(),
                 new Bat()));
 
         new BukkitRunnable() {

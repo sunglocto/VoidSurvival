@@ -6,11 +6,18 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.data.type.Bed;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.util.Vector;
+
+import javax.swing.*;
+import java.util.Random;
 
 public class Fishing implements Listener {
 
@@ -39,16 +46,31 @@ public class Fishing implements Listener {
 
         player.spawnParticle(Particle.SONIC_BOOM, front, 1);
 
+        Random random = new Random();
+
+        double probability = 0.01D;
+        double randomNumber = random.nextDouble();
+
+        if (randomNumber > probability) return;
+
+        EntityType[] entityTypes = {
+                EntityType.DROWNED,
+                EntityType.GUARDIAN,
+                EntityType.ELDER_GUARDIAN
+        };
+
+        int randomIndex = random.nextInt(entityTypes.length);
+
+        EntityType entityType = entityTypes[randomIndex];
+        Location hook = event.getHook().getLocation();
+
+        Entity entity = hook.getWorld().spawnEntity(
+                hook, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM);
+
+
+        entity.getWorld().playSound(
+                hook, Sound.ENTITY_ELDER_GUARDIAN_CURSE, 1.0F, 1.0F);
+
+        entity.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, hook, 1);
     }
-//
-//
-//    show sonic boom 1 block infront of player's head
-//    set metadata tag "fishing" of last spawned xp to true
-//            if chance of 1%:
-//    set {_caught} to caught fish
-//    spawn elder guardian or guardian at fishing caught entity
-//    set (last spawned entity)'s held item to item of {_caught}
-//    set item of {_caught} to air
-//    show huge explosion at fishing caught entity
-//    play sound "minecraft:entity.elder_guardian.curse" at fishing caught entity
 }
