@@ -19,6 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.List;
 import java.util.Random;
@@ -45,6 +47,8 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
 
     private static RecipeManager recipeManager;
 
+    private static Team collisionTeam;
+
     public static RecipeManager getRecipeManager() { return recipeManager; }
     public static WorldResetManager getMapResetScheduler() {
         return mapResetScheduler;
@@ -55,6 +59,8 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
     }
 
     public static SpiGUI getSpiGUI() { return spiGUI; }
+
+    public static Team getCollisionTeam() { return collisionTeam; }
 
     @Override
     public void onLoad() {
@@ -84,27 +90,29 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
         recipeManager = new RecipeManager(this);
 
         CommandAPI.onEnable();
-        registerListeners(this, List.of(
-                new Drowned(),
-                new Fishing(),
-                new Death(),
-                new PortalEnter(),
-                new WorldGuard(),
-                new EntityExplode(),
-                new Blaze(),
-                new Guardian(),
-                new WanderingTrader(),
-                new Witch(),
-                new CraftingTable(),
-                new DirtConvertToMoss(),
-                new EntityExplode(),
-                new HandTradeSwap(),
-                new NautilusTreasure(),
-                new GodVillager(),
-                new Quit(),
-                new Join(),
-                new Chat(),
-                new Bat()));
+        registerListeners(this,
+                List.of(
+                    new Drowned(),
+                    new Fishing(),
+                    new Death(),
+                    new PortalEnter(),
+                    new WorldGuard(),
+                    new EntityExplode(),
+                    new Blaze(),
+                    new Guardian(),
+                    new WanderingTrader(),
+                    new Witch(),
+                    new CraftingTable(),
+                    new DirtConvertToMoss(),
+                    new EntityExplode(),
+                    new HandTradeSwap(),
+                    new NautilusTreasure(),
+                    new GodVillager(),
+                    new Quit(),
+                    new Join(),
+                    new Chat(),
+                    new Bat()
+                ));
 
         new BukkitRunnable() {
             @Override
@@ -138,6 +146,24 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
             }
         }.runTaskTimer(this, 0L, 20L * 10L);
 
+        Scoreboard scoreboard = plugin.getServer().getScoreboardManager().getMainScoreboard();
+
+        Team team = scoreboard.getTeam("anti_collision");
+
+        if (team == null) {
+            team = scoreboard.registerNewTeam("anti_collision");
+        } else {
+            team.getEntries().clear();
+        }
+        team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.FOR_OWN_TEAM);
+
+        collisionTeam = team;
+
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            if (!team.hasPlayer(player)) {
+                team.addPlayer(player);
+            }
+        }
     }
 
     @Override
