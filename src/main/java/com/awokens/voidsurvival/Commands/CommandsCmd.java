@@ -2,9 +2,12 @@ package com.awokens.voidsurvival.Commands;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.RegisteredCommand;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
 
@@ -26,14 +29,15 @@ public class CommandsCmd {
                     HashMap<String, RegisteredCommand> commands = new HashMap<>();
 
                     for (RegisteredCommand command : CommandAPI.getRegisteredCommands()) {
+
                         if (!commands.containsKey(command.commandName())) {
+
                             commands.put(command.commandName(), command);
                         }
                     }
 
                     for (RegisteredCommand command : commands.values()) {
 
-                        if (!player.hasPermission(command.permission().toString())) continue;;
 
                         String description = command.fullDescription()
                                 .orElse("No description provided");
@@ -46,6 +50,10 @@ public class CommandsCmd {
 
                         player.sendMessage(component);
                     }
+
+                    player.sendMessage(MiniMessage.miniMessage().deserialize(
+                            "<newline><gray>Hover over text for command description<newline>"
+                    ).decoration(TextDecoration.ITALIC, true));
                     
                 }).register();
     }

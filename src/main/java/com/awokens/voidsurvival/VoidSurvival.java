@@ -65,6 +65,7 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
         new Respawn();
         new CommandsCmd();
         new RecipesCmd();
+        new PromoLinksCmd();
     }
 
     @Override

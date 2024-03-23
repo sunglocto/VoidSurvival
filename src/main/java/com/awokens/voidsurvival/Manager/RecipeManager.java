@@ -4,16 +4,19 @@ import com.awokens.voidsurvival.VoidSurvival;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.buttons.SGButtonListener;
 import com.samjakob.spigui.menu.SGMenu;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +45,28 @@ public class RecipeManager {
         addFurnaceRecipe("blackstone", new ItemStack(Material.BLACKSTONE), Material.COBBLED_DEEPSLATE, 1.0F, 280);
 
 
+        addShapedRecipe("ender_eye",
+                new ItemStack(Material.ENDER_EYE),
+                List.of(
+                        Material.AIR, Material.AIR, Material.BLAZE_POWDER,
+                        Material.AIR, Material.HEART_OF_THE_SEA, Material.AIR,
+                        Material.ENDER_PEARL, Material.AIR, Material.AIR
+                ));
+        addShapedRecipe("end_portal_frame",
+                new ItemStack(Material.END_PORTAL_FRAME),
+                List.of(
+                        Material.PRISMARINE_SHARD, Material.PRISMARINE_SHARD, Material.PRISMARINE_SHARD,
+                        Material.OXIDIZED_COPPER, Material.REINFORCED_DEEPSLATE, Material.OXIDIZED_COPPER,
+                        Material.REINFORCED_DEEPSLATE,  Material.OXIDIZED_COPPER, Material.REINFORCED_DEEPSLATE
+                ));
+
+        addShapedRecipe("reinforced_deepslate",
+                new ItemStack(Material.REINFORCED_DEEPSLATE),
+                List.of(
+                        Material.IRON_INGOT, Material.COBBLED_DEEPSLATE, Material.IRON_INGOT,
+                        Material.IRON_INGOT, Material.COBBLED_DEEPSLATE, Material.IRON_INGOT,
+                        Material.IRON_INGOT, Material.COBBLED_DEEPSLATE, Material.IRON_INGOT
+                ));
 
         addShapedRecipe("tuff",
                 new ItemStack(Material.TUFF),
@@ -73,6 +98,20 @@ public class RecipeManager {
                         Material.GOLD_BLOCK, Material.GOLD_BLOCK, Material.GOLD_BLOCK,
                         Material.GOLD_BLOCK, Material.GOLD_BLOCK, Material.GOLD_BLOCK
                 ));
+
+//        addShapelessRecipe("ender_eye",
+//                new ItemStack(Material.AIR),
+//                List.of(
+//                        Material.ENDER_EYE, Material.BLAZE_POWDER
+//                ));
+        addShapelessRecipe("tuff_reversed",
+                new ItemStack(Material.TUFF, 9),
+                List.of(Material.COBBLED_DEEPSLATE));
+
+        addShapelessRecipe("cobblestone_reversed",
+                new ItemStack(Material.COBBLESTONE, 9),
+                List.of(Material.TUFF));
+
 
         this.RecipeMenu = VoidSurvival.getSpiGUI().create("&8Recipes", 6);
 
@@ -229,22 +268,17 @@ public class RecipeManager {
 
     public void addShapelessRecipe(String keyName, ItemStack result, List<Material> materials) {
 
+        if (materials.size() > 9) {
+            throw new RuntimeException("This shapeless recipe " + keyName + " requires 9 materials, but only found " + materials.size());
+        }
+
         NamespacedKey key = new NamespacedKey(plugin, keyName);
 
         // Create and configure ShapelessRecipe
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
 
-        // Assign characters to materials and reuse characters for the same material
-        Map<Material, Integer> materialMap = new HashMap<>();
         for (Material material : materials) {
-            Integer count = materialMap.get(material);
-            if (count == null) {
-                count = 1;
-            } else {
-                count++;
-            }
-            materialMap.put(material, count);
-            recipe.addIngredient(count, material);
+            recipe.addIngredient(material);
         }
 
         // Register recipe
