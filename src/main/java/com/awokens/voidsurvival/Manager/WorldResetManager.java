@@ -39,7 +39,7 @@ public class WorldResetManager {
             public void run() {
                 long timeLeft = updateTime();
                 mapResetBar.setProgress(percentage(timeLeft));
-                mapResetBar.setTitle("Next World Reset: " + formatUnix(timeLeft));
+                mapResetBar.setTitle("Overworld will clear in: " + formatUnix(timeLeft));
             }
         }.runTaskTimer(VoidSurvival.getPlugin(), 20L, 20L);
 

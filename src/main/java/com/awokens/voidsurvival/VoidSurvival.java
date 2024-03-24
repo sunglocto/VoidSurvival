@@ -90,29 +90,30 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
         recipeManager = new RecipeManager(this);
 
         CommandAPI.onEnable();
-        registerListeners(this,
-                List.of(
-                    new Drowned(),
-                    new Fishing(),
-                    new Death(),
-                    new PortalEnter(),
-                    new WorldGuard(),
-                    new EntityExplode(),
-                    new Blaze(),
-                    new Guardian(),
-                    new WanderingTrader(),
-                    new Witch(),
-                    new CraftingTable(),
-                    new DirtConvertToMoss(),
-                    new EntityExplode(),
-                    new HandTradeSwap(),
-                    new NautilusTreasure(),
-                    new GodVillager(),
-                    new Quit(),
-                    new Join(),
-                    new Chat(),
-                    new Bat()
-                ));
+        registerListeners(this, List.of(
+                new Drowned(),
+                new Fishing(),
+                new Death(),
+                new PortalEnter(),
+                new WorldGuard(),
+                new EntityExplode(),
+                new Blaze(),
+                new Guardian(),
+                new WanderingTrader(),
+                new Witch(),
+                new CraftingTable(),
+                new DirtConvertToMoss(),
+                new EntityExplode(),
+                new HandTradeSwap(),
+                new NautilusTreasure(),
+                new GodVillager(),
+                new Quit(),
+                new Join(),
+                new Chat(),
+                new Bat(),
+                new SandMechanism(),
+                new CustomSuspiciousSandDrops()
+        ));
 
         new BukkitRunnable() {
             @Override
@@ -147,23 +148,6 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
         }.runTaskTimer(this, 0L, 20L * 10L);
 
         Scoreboard scoreboard = plugin.getServer().getScoreboardManager().getMainScoreboard();
-
-        Team team = scoreboard.getTeam("anti_collision");
-
-        if (team == null) {
-            team = scoreboard.registerNewTeam("anti_collision");
-        } else {
-            team.getEntries().clear();
-        }
-        team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.FOR_OWN_TEAM);
-
-        collisionTeam = team;
-
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (!team.hasPlayer(player)) {
-                team.addPlayer(player);
-            }
-        }
     }
 
     @Override
@@ -173,7 +157,6 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
 
         getMapResetScheduler().getMapResetBar().setVisible(false);
         getMapResetScheduler().getTask().cancel();
-
         Bukkit.clearRecipes();
     }
 
