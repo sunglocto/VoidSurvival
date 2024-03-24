@@ -112,7 +112,8 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
                 new Chat(),
                 new Bat(),
                 new SandMechanism(),
-                new CustomSuspiciousSandDrops()
+                new CustomSuspiciousSandDrops(),
+                new LavaCauldronMechanism()
         ));
 
         new BukkitRunnable() {
@@ -146,8 +147,6 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
 
             }
         }.runTaskTimer(this, 0L, 20L * 10L);
-
-        Scoreboard scoreboard = plugin.getServer().getScoreboardManager().getMainScoreboard();
     }
 
     @Override

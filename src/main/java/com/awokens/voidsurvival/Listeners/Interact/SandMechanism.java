@@ -10,6 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Random;
+
 public class SandMechanism implements Listener {
 
     @EventHandler
@@ -94,8 +96,14 @@ public class SandMechanism implements Listener {
         player.setCooldown(Material.GLASS_BOTTLE, 5);
 
         used.setType(Material.GLASS_BOTTLE);
-        block.setType(Material.SAND);
 
+        Random random = new Random();
+
+        if (random.nextInt(100) <= 25) {
+            block.setType(Material.SUSPICIOUS_SAND);
+        } else {
+            block.setType(Material.SAND);
+        }
         player.playSound(player, Sound.ITEM_BOTTLE_EMPTY, 1.0F, 1.0F);
         player.playSound(block.getLocation(), Sound.BLOCK_GRAVEL_BREAK, 0.5F, 0.5F);
         player.playSound(block.getLocation(), Sound.ITEM_DYE_USE, 0.5F, 0.5F);
