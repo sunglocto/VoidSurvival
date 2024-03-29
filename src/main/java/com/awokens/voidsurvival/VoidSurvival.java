@@ -138,7 +138,8 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
                 new EntityExplode(this),
                 new PlayerQuit(this),
                 new PlayerJoin(this),
-                new PlayerChat(this)
+                new PlayerChat(this),
+                new FireballProjectile(this)
         );
         for (Listener listener : listeners) {
             try {
