@@ -29,6 +29,10 @@ public class TNTTrailManager {
         this.relatives = new HashSet<>();
         this.plugin = plugin;
         this.counter = Math.min(counter, max_counter);
+
+        if (isRelative(startBlock)) {
+            startBlock.breakNaturally(true);
+        }
         trail(startBlock);
 
     }
