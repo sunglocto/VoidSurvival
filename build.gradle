@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.awokens'
-version = '1.0'
+version = '1.4'
 
 repositories {
     mavenCentral()
@@ -36,6 +36,8 @@ dependencies {
     compileOnly 'dev.jorel:commandapi-annotations:9.3.0'
     annotationProcessor 'dev.jorel:commandapi-annotations:9.3.0'
     implementation "dev.jorel:commandapi-bukkit-shade:9.3.0"
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.42")) // Ref: https://github.com/IntellectualSites/bom
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
 
 }
 
