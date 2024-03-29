@@ -18,12 +18,12 @@ public class TNTTrailManager {
     // But any other surrounding blocks can be reached.
     private final Set<Location> relatives;
 
-    private int counter;
+    private float counter;
 
     private final Plugin plugin;
 
 
-    private final int max_counter = 100;
+    private final float max_counter = 100.0F;
 
     public TNTTrailManager(Plugin plugin, Block startBlock, int counter) {
         this.relatives = new HashSet<>();
@@ -48,21 +48,16 @@ public class TNTTrailManager {
 
 
     public static boolean isRelative(Block block) {
-        if (!block.getType().isSolid()) return false;
+        if (!block.isSolid()) return false; // e.g. short grass, planets, etc.
         double hardness = block.getType().getHardness();
-
-        return switch (block.getType()) {
-            case TUFF, COBBLED_DEEPSLATE -> true;
-            default -> !(hardness >= 3.0F) && !(hardness < 0.3F);
-        };
-
+        return !(hardness < 0.0F);
     }
 
     private void trail(Block next) {
 
         for (Block connectedBlock : getConnectedBlocks(next)) {
 
-            if (this.counter < 0 || this.counter > max_counter) break;
+            if (this.counter <= 0.0f || this.counter > max_counter) break;
 
             if (!isRelative(connectedBlock)) continue;
 
@@ -70,13 +65,9 @@ public class TNTTrailManager {
 
             if (this.relatives.contains(location)) continue;
 
-            int tier = switch (connectedBlock.getType()) {
-                case TUFF -> 2;
-                case COBBLED_DEEPSLATE -> 3;
-                default -> 1;
-            };
+            float tier = connectedBlock.getType().getHardness();
 
-            if (this.counter - tier < 0) return;
+            if (this.counter - tier <= 0.0) return;
 
             connectedBlock.breakNaturally(true);
 

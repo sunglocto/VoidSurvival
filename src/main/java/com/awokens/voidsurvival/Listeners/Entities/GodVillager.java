@@ -1,8 +1,7 @@
-package com.awokens.voidsurvival.Listeners.Mobs;
+package com.awokens.voidsurvival.Listeners.Entities;
 
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTEntity;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;

@@ -1,6 +1,5 @@
-package com.awokens.voidsurvival.Listeners.Mobs;
+package com.awokens.voidsurvival.Listeners.Entities;
 
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ElderGuardian;
@@ -14,7 +13,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Guardian implements Listener {
 
@@ -37,22 +35,37 @@ public class Guardian implements Listener {
             event.getDrops().add(new ItemStack(Material.HEART_OF_THE_SEA, 1));
         }
 
-        if (!player.hasPotionEffect(PotionEffectType.LUCK)) return;
+        PotionEffect potionEffect = player.getPotionEffect(PotionEffectType.LUCK);
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, (20 * 60 * 4), 2));
+        if (potionEffect == null || potionEffect.getAmplifier() < 1) return;
+
+        player.addPotionEffect(new PotionEffect(
+                PotionEffectType.LUCK,
+                potionEffect.getDuration() + 20 * 60 * 4,
+                2
+        ));
+
     }
 
     @EventHandler
     public void guardian(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof org.bukkit.entity.Guardian)) return;
 
+        if (event.getEntity() instanceof ElderGuardian) return;
+
         Entity killer = event.getEntity().getKiller();
 
         if (!(killer instanceof Player player)) return;
 
-        if (player.hasPotionEffect(PotionEffectType.LUCK)) return;
+        PotionEffect potionEffect = player.getPotionEffect(PotionEffectType.LUCK);
+        if (potionEffect == null || potionEffect.getAmplifier() > 1) return;
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, (20 *60 * 4), 2));
+        player.addPotionEffect(new PotionEffect(
+                PotionEffectType.LUCK,
+                potionEffect.getDuration() + 20 * 60 * 4,
+                1
+        ));
+
     }
 
 }

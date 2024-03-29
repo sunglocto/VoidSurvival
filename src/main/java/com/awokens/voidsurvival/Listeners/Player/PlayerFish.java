@@ -6,7 +6,6 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,10 +15,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.util.Vector;
 
-import javax.swing.*;
 import java.util.Random;
 
-public class Fishing implements Listener {
+public class PlayerFish implements Listener {
 
     @EventHandler
     public void fish(PlayerFishEvent event) {

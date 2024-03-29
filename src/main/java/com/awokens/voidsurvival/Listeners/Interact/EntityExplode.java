@@ -10,6 +10,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class EntityExplode implements Listener {
 
+    private final VoidSurvival plugin;
+    public EntityExplode(VoidSurvival plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void explode(EntityExplodeEvent event) {
         if (!(event.getEntity() instanceof TNTPrimed tnt)) return;
@@ -18,7 +23,7 @@ public class EntityExplode implements Listener {
 
         for (Block connectedBlock : TNTTrailManager.getConnectedBlocks(tnt.getLocation().getBlock())) {
             if (TNTTrailManager.isRelative(connectedBlock)) {
-                new TNTTrailManager(VoidSurvival.getPlugin(), connectedBlock, 60);
+                new TNTTrailManager(plugin, connectedBlock, 60);
                 break;
             }
         }

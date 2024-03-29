@@ -1,4 +1,4 @@
-package com.awokens.voidsurvival.Commands;
+package com.awokens.voidsurvival.Commands.Default;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
@@ -21,7 +21,7 @@ public class CommandsCmd {
                 .executesPlayer((player, args) -> {
 
                     final Component title = MiniMessage.miniMessage().deserialize(
-                            "<yellow>Commands:<newline>");
+                            "<newline><yellow>Commands:<newline>");
 
                     player.sendMessage(title);
 
@@ -30,8 +30,10 @@ public class CommandsCmd {
 
                     for (RegisteredCommand command : CommandAPI.getRegisteredCommands()) {
 
-                        if (!commands.containsKey(command.commandName())) {
+                        CommandPermission permission = command.permission();
+                        if (permission != CommandPermission.NONE) continue;
 
+                        if (!commands.containsKey(command.commandName())) {
                             commands.put(command.commandName(), command);
                         }
                     }

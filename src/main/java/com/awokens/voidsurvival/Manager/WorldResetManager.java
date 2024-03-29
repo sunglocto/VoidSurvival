@@ -1,15 +1,20 @@
 package com.awokens.voidsurvival.Manager;
 
 import com.awokens.voidsurvival.VoidSurvival;
-import org.bukkit.Bukkit;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import javax.swing.border.Border;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class WorldResetManager {
@@ -17,7 +22,10 @@ public class WorldResetManager {
 
     private final BossBar mapResetBar;
 
-    public WorldResetManager() {
+    private final VoidSurvival plugin;
+    public WorldResetManager(VoidSurvival plugin) {
+
+        this.plugin = plugin;
 
         mapResetBar = Bukkit.createBossBar(
                 "Loading...",
@@ -30,7 +38,7 @@ public class WorldResetManager {
         mapResetBar.setProgress(1.0);
         for (Player player : Bukkit.getOnlinePlayers()) {
 
-            if (VoidSurvival.getLuckPermsUtils().hasBossBarToggled(player)) {
+            if (plugin.luckPermsUtils().hasBossBarToggled(player)) {
                 mapResetBar.addPlayer(player);
             }
         }
@@ -41,7 +49,7 @@ public class WorldResetManager {
                 mapResetBar.setProgress(percentage(timeLeft));
                 mapResetBar.setTitle("Overworld will clear in: " + formatUnix(timeLeft));
             }
-        }.runTaskTimer(VoidSurvival.getPlugin(), 20L, 20L);
+        }.runTaskTimer(plugin, 20L, 20L);
 
     }
 
@@ -54,23 +62,23 @@ public class WorldResetManager {
     }
 
     public long updateTime() {
-        long timestamp = VoidSurvival.configManager()
+        long timestamp = plugin.configManager()
                 .getWorldResetTimer();
 
         timestamp -= 1;
 
         if (timestamp < 1) {
             timestamp = 60 * 60 * 24 * 2; // Set default timer if not set
-            VoidSurvival.configManager()
+            plugin.configManager()
                     .getVoidConfig()
                     .set("world_reset_timer", timestamp);
         } else {
-            VoidSurvival.configManager()
+            plugin.configManager()
                     .getVoidConfig()
                     .set("world_reset_timer", timestamp);
         }
 
-        VoidSurvival.configManager().saveConfig();
+        plugin.configManager().saveConfig();
 
         return timestamp;
     }

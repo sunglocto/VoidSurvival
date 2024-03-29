@@ -1,6 +1,5 @@
 package com.awokens.voidsurvival.Listeners.Interact;
 
-import de.tr7zw.changeme.nbtapi.NBTBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,7 +14,6 @@ import org.bukkit.loot.LootTables;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -42,14 +40,35 @@ public class CustomSuspiciousSandDrops implements Listener {
                 .build();
 
         if (lootTable == null) return;
-        Collection<ItemStack> lootItems = lootTable.populateLoot(new Random(), lootContext);
 
-        List<ItemStack> items = new ArrayList<>(lootItems);
+        Random random = new Random();
+        ItemStack randomItem;
 
-        int randomIndex = ThreadLocalRandom.current().nextInt(items.size());
-        ItemStack randomItem = items.get(randomIndex);
+        if (random.nextInt(100) <= 60) {
+            int randomIndex = random.nextInt(common.length);
+            randomItem = new ItemStack(common[randomIndex]);
+        } else {
+            Collection<ItemStack> lootItems = lootTable.populateLoot(new Random(), lootContext);
+            lootItems.removeIf(itemStack -> itemStack.getType() == Material.ENCHANTED_GOLDEN_APPLE);
+
+            if (!lootItems.isEmpty()) {
+                int randomIndex = ThreadLocalRandom.current().nextInt(lootItems.size());
+                randomItem = new ArrayList<>(lootItems).get(randomIndex);
+            } else {
+                // Handle the case where lootItems is empty, maybe set a default item or do something else
+                randomItem = new ItemStack(Material.AIR); // Example: Setting AIR as default
+            }
+        }
 
         brushableBlock.setItem(randomItem);
         brushableBlock.update();
     }
+
+    private final Material[] common = {
+            Material.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
+            Material.BOW,
+            Material.FISHING_ROD,
+            Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE,
+
+    };
 }

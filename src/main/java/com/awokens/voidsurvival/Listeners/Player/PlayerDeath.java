@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class Death implements Listener {
+public class PlayerDeath implements Listener {
 
     @EventHandler
     public void death(PlayerDeathEvent event) {

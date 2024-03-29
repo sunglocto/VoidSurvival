@@ -14,6 +14,8 @@ public class DirtConvertToMoss implements Listener {
     @EventHandler
     public void moss(PlayerInteractEvent event) {
 
+        if (event.getAction().isLeftClick()) return;
+
         Block block = event.getClickedBlock();
 
         if (block == null) return;

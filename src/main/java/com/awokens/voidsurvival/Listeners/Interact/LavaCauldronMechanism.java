@@ -16,10 +16,20 @@ import java.util.Random;
 
 public class LavaCauldronMechanism implements Listener {
 
+
+    private final VoidSurvival plugin;
+    public LavaCauldronMechanism(VoidSurvival plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void interact(PlayerInteractEvent event) {
 
         Block clickdBlock = event.getClickedBlock();
+
+        if (event.getAction().isLeftClick()) return;
+
+        if (!event.getPlayer().isSneaking()) return;
 
         if (clickdBlock == null || clickdBlock.getType() != Material.CAULDRON) return;
 
@@ -36,9 +46,15 @@ public class LavaCauldronMechanism implements Listener {
 
         if (heldItem.isEmpty()) return;
 
-        if (heldItem.getType() != Material.COBBLESTONE && heldItem.getAmount() != 64) return;
+        if (heldItem.getType() != Material.COBBLED_DEEPSLATE) return;
 
-        heldItem.subtract(64);
+        if (heldItem.getAmount() < 16) return;
+
+        if (player.getCooldown(Material.COBBLED_DEEPSLATE) > 0) return;
+
+        player.setCooldown(Material.COBBLED_DEEPSLATE, 20);
+
+        heldItem.subtract(16);
         player.swingMainHand();
         player.playSound(clickdBlock.getLocation(), Sound.ITEM_BUNDLE_INSERT, 1.0F, 1.0F);
         player.playSound(clickdBlock.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 1.0F, 1.0F);
@@ -101,7 +117,7 @@ public class LavaCauldronMechanism implements Listener {
                 counters[0] -= 1;
 
             }
-        }.runTaskTimer(VoidSurvival.getPlugin(), 0L, 1L);
+        }.runTaskTimer(plugin, 0L, 1L);
 
     }
 }

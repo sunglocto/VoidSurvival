@@ -17,11 +17,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BundleMeta;
 
-public class Chat implements Listener {
+public class PlayerChat implements Listener {
 
     private final String pattern = "\\[(item|inv)]";
-    private final String itemPattern = "\\[item\\]";
-    private final String invPattern = "\\[inv\\]";
+    private final String itemPattern = "\\[item]";
+    private final String invPattern = "\\[inv]";
+
+    private final VoidSurvival plugin;
+    public PlayerChat(VoidSurvival plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void chat(AsyncChatEvent event) {
@@ -55,7 +60,13 @@ public class Chat implements Listener {
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        int amount = item.getAmount();
+        // fancy i know
+        int amount = player.getInventory().all(item.getType())
+                .values()
+                .stream()
+                .mapToInt(ItemStack::getAmount)
+                .sum();
+
         String name = item.getType().name().replaceAll("_", " ").toLowerCase();
         HoverEvent<HoverEvent.ShowItem> hover = Bukkit.getItemFactory().asHoverEvent(item,
                 showItem -> showItem);
@@ -79,7 +90,7 @@ public class Chat implements Listener {
         BundleMeta meta = (BundleMeta) bundle.getItemMeta();
 
 
-        SGMenu snapshot = VoidSurvival.getSpiGUI().create("&8Inventory Snapshot", 5);
+        SGMenu snapshot = plugin.spiGUI().create("&8Inventory Snapshot", 5);
         for (ItemStack item : items) {
             if (item == null || item.isEmpty()) continue;
             meta.addItem(item);

@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class VoidConfigManager {
+public class ConfigManager {
 
 
     private File configFile;
@@ -19,7 +19,7 @@ public class VoidConfigManager {
 
     private final Plugin plugin;
 
-    public VoidConfigManager(Plugin plugin, File dataFolder) {
+    public ConfigManager(Plugin plugin, File dataFolder) {
         this.dataFolder = dataFolder;
         this.plugin = plugin;
         loadConfigFile();

@@ -4,24 +4,36 @@ import com.awokens.voidsurvival.VoidSurvival;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
 
-public class Join implements Listener {
+public class PlayerJoin implements Listener {
+
+
+    private final VoidSurvival plugin;
+    public PlayerJoin(VoidSurvival plugin) {
+        this.plugin = plugin;
+    }
+
 
     @EventHandler
     public void join(PlayerJoinEvent event) {
-
         Player player = event.getPlayer();
 
-        if (VoidSurvival.getLuckPermsUtils().hasBossBarToggled(player)) {
-            VoidSurvival.getMapResetScheduler().getMapResetBar().addPlayer(player);
+        if (plugin.luckPermsUtils().hasBossBarToggled(player)) {
+            plugin.worldResetManager().getMapResetBar().addPlayer(player);
         }
 
         final Component header = MiniMessage.miniMessage().deserialize(
@@ -66,7 +78,7 @@ public class Join implements Listener {
                     player.showTitle(formatter);
                     player.playSound(player, Sound.BLOCK_DEEPSLATE_TILES_STEP, 1.0F, 1.0F);
                 }
-            }.runTaskLater(VoidSurvival.getPlugin(), letterDelay);
+            }.runTaskLater(plugin, letterDelay);
             letterDelay += 2L;
         }
 
@@ -76,7 +88,7 @@ public class Join implements Listener {
                 player.playSound(player, Sound.BLOCK_STONE_PLACE, 1F, 1F);
                 player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5F, 1F);
             }
-        }.runTaskLater(VoidSurvival.getPlugin(), letterDelay);
+        }.runTaskLater(plugin, letterDelay);
 
         letterDelay += 17L;
 
@@ -95,7 +107,7 @@ public class Join implements Listener {
                 player.showTitle(officialTitle);
                 player.playSound(player, Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 1F, 1F);
             }
-        }.runTaskLater(VoidSurvival.getPlugin(), letterDelay);
+        }.runTaskLater(plugin, letterDelay);
 
         letterDelay += 1L;
 
@@ -116,6 +128,6 @@ public class Join implements Listener {
 
 
             }
-        }.runTaskLater(VoidSurvival.getPlugin(), letterDelay);
+        }.runTaskLater(plugin, letterDelay);
     }
 }

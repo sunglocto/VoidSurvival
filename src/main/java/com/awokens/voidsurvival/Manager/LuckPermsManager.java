@@ -8,11 +8,11 @@ import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.bukkit.entity.Player;
 
-public class LuckPermsUtils {
+public class LuckPermsManager {
 
     private final LuckPerms API;
 
-    public LuckPermsUtils() {
+    public LuckPermsManager() {
         API = LuckPermsProvider.get();
     }
 

@@ -1,23 +1,20 @@
-package com.awokens.voidsurvival.Listeners.Mobs;
+package com.awokens.voidsurvival.Listeners.Entities;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class Blaze implements Listener {
+public class Skeleton implements Listener {
 
     @EventHandler
     public void death(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof Skeleton skeleton)) return;
+        if (!(event.getEntity() instanceof org.bukkit.entity.Skeleton skeleton)) return;
 
         EntityDamageEvent cause = skeleton.getLastDamageCause();
 
@@ -31,15 +28,17 @@ public class Blaze implements Listener {
         switch (type) {
             case BLACKSTONE:
             case BLACKSTONE_SLAB:
+                location.getWorld().spawnEntity(location, EntityType.BLAZE);
+                break;
+            case SOUL_SOIL:
+                location.getWorld().spawnEntity(location, EntityType.WITHER_SKELETON);
                 break;
             default:
                 return;
         }
-
+        below.getBlock().setType(Material.AIR);
         event.getDrops().clear();
-        location.getWorld().spawnEntity(location, EntityType.BLAZE);
-
-        location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 1);
-        location.getWorld().playSound(location, Sound.ENTITY_WITHER_SPAWN, 0.5F, 1.0F);
+        below.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, below, 1);
+        location.getWorld().playSound(location, Sound.ENTITY_WITHER_SPAWN, 0.7F, 1.0F);
     }
 }

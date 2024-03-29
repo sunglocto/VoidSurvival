@@ -50,6 +50,7 @@ public class WorldGuard implements Listener {
 
         if (!event.getBlock().isLiquid()) return;
 
+        event.setCancelled(true);
         event.getSourceBlock().setType(Material.AIR);
 
     }
@@ -66,30 +67,18 @@ public class WorldGuard implements Listener {
     }
 
     private boolean inProtectedRegion(Location location) {
-        for (WorldType type : WorldType.values()) {
-            if (inRegion(location, type)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    private boolean inRegion(Location location, WorldType type) {
-
-        World world = null;
-
-        switch (type) {
-            case WORLD -> world = SpawnPointManager.getWorldSpawn().getWorld();
-            case NETHER -> world = SpawnPointManager.getNetherSpawn().getWorld();
-            case END -> world = SpawnPointManager.getEndSpawn().getWorld();
-        }
-
-        if (world == null) return false;
+        Location spawn = switch (location.getWorld().getName()) {
+            case "world" -> SpawnPointManager.getWorldSpawn();
+            case "world_nether" -> SpawnPointManager.getNetherSpawn();
+            case "world_the_end" -> SpawnPointManager.getEndSpawn();
+            default -> throw new IllegalStateException("Unexpected value: " + location.getWorld().getName());
+        };
 
         return inBound(
                 location,
-                new Location(world, 2.5, -64, 2.5),
-                new Location(world, -2, -61, -2)
+                new Location(spawn.getWorld(), 2.5,  spawn.getY() - 1, 2.5),
+                new Location(spawn.getWorld(), -2, spawn.getY() + 3, -2)
 
         );
     }

@@ -1,12 +1,12 @@
-package com.awokens.voidsurvival.Commands;
+package com.awokens.voidsurvival.Commands.Default;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 
-public class Respawn {
+public class RespawnCmd {
 
-    public Respawn() {
+    public RespawnCmd() {
 
         new CommandAPICommand("respawn")
                 .withAliases("suicide", "commitarson", "itseverydaybro")

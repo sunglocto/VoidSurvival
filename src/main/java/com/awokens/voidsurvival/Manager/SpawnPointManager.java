@@ -14,6 +14,6 @@ public class SpawnPointManager {
     }
 
     public static Location getEndSpawn() {
-        return new Location(Bukkit.getWorld("world_the_end"),0.5, -63, 0.5);
+        return new Location(Bukkit.getWorld("world_the_end"),0.5, 1, 0.5);
     }
 }

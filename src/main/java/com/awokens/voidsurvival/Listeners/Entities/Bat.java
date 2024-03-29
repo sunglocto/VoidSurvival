@@ -1,4 +1,4 @@
-package com.awokens.voidsurvival.Listeners.Mobs;
+package com.awokens.voidsurvival.Listeners.Entities;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

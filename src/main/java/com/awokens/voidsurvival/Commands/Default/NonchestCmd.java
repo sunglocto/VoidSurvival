@@ -1,4 +1,4 @@
-package com.awokens.voidsurvival.Commands;
+package com.awokens.voidsurvival.Commands.Default;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import net.kyori.adventure.text.minimessage.MiniMessage;

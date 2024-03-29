@@ -18,6 +18,11 @@ import java.util.List;
 
 public class HandTradeSwap implements Listener {
 
+    private final VoidSurvival plugin;
+    public HandTradeSwap(VoidSurvival plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void trade(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
@@ -44,8 +49,8 @@ public class HandTradeSwap implements Listener {
 
 
         if (value == null || value.equals(player)) {
-            FixedMetadataValue mutual = new FixedMetadataValue(VoidSurvival.getPlugin(), clickedPlayer);
-            FixedMetadataValue timestamp = new FixedMetadataValue(VoidSurvival.getPlugin(), new Date().getTime());
+            FixedMetadataValue mutual = new FixedMetadataValue(plugin, clickedPlayer);
+            FixedMetadataValue timestamp = new FixedMetadataValue(plugin, new Date().getTime());
             player.setMetadata("mutual", mutual);
             player.setMetadata("clicked", timestamp);
             return;
@@ -68,8 +73,8 @@ public class HandTradeSwap implements Listener {
         }
 
         for (String key : List.of("mutual", "clicked")) {
-            player.removeMetadata(key, VoidSurvival.getPlugin());
-            clickedPlayer.removeMetadata(key, VoidSurvival.getPlugin());
+            player.removeMetadata(key, plugin);
+            clickedPlayer.removeMetadata(key, plugin);
         }
     }
 }
