@@ -23,19 +23,15 @@ public class NautilusTreasure implements Listener {
     public void treasure(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (!event.getAction().isRightClick()) return;
-
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         if (heldItem.isEmpty()) return;
-
         if (heldItem.getType() != Material.NAUTILUS_SHELL) return;
-
         if (player.getCooldown(Material.NAUTILUS_SHELL) > 0) return;
 
         heldItem.subtract(1);
 
         player.setCooldown(Material.NAUTILUS_SHELL, 20);
-
 
         LootTable lootTable = Bukkit.getLootTable(LootTables.SHIPWRECK_SUPPLY.getKey());
         LootContext lootContext = new LootContext.Builder(player.getLocation())
