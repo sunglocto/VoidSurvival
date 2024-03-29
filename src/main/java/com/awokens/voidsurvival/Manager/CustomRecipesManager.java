@@ -71,6 +71,29 @@ public class CustomRecipesManager {
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "ender_eye"));
 
+        addShapedRecipe("firework_star",
+                new ItemStack(Material.FIREWORK_STAR),
+                List.of(
+                        Material.GUNPOWDER, Material.GUNPOWDER, Material.GUNPOWDER,
+                        Material.GUNPOWDER, Material.GUNPOWDER, Material.GUNPOWDER,
+                        Material.GUNPOWDER, Material.WATER_BUCKET, Material.GUNPOWDER
+                ));
+
+        ItemStack fireball = new ItemStack(Material.FIRE_CHARGE);
+        ItemMeta meta = fireball.getItemMeta();
+        meta.displayName(MiniMessage.miniMessage()
+                .deserialize("<yellow>Fireball")
+                .decoration(TextDecoration.ITALIC, false));
+        fireball.setItemMeta(meta);
+
+        addShapedRecipe("fire_ball",
+                fireball,
+                List.of(
+                        Material.SAND, Material.REDSTONE, Material.REDSTONE,
+                        Material.FIREWORK_STAR, Material.COAL, Material.REDSTONE,
+                        Material.FIREWORK_STAR, Material.FIREWORK_STAR, Material.PAPER
+                ));
+
         addShapedRecipe("ender_eye",
                 new ItemStack(Material.ENDER_EYE),
                 List.of(
@@ -137,9 +160,7 @@ public class CustomRecipesManager {
                         Material.AIR, Material.AIR, Material.AIR
                 ));
 
-        addShapedRecipe("soul_soil",
-                new ItemStack(Material.SOUL_SOIL),
-                List.of(
+        addShapedRecipe("soul_soil", new ItemStack(Material.SOUL_SOIL), List.of(
                         Material.COARSE_DIRT, Material.COARSE_DIRT, Material.COARSE_DIRT,
                         Material.SOUL_SAND, Material.MUD, Material.COARSE_DIRT,
                         Material.MUD, Material.SOUL_SAND, Material.COARSE_DIRT
@@ -159,13 +180,13 @@ public class CustomRecipesManager {
         SGMenu potionMenu = plugin.spiGUI().create("&8Potion Recipes", 5);
 
 
-        ItemStack item = new ItemStack(Material.RED_DYE);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(MiniMessage.miniMessage().deserialize(
+        ItemStack backButton = new ItemStack(Material.RED_DYE);
+        ItemMeta backButtonItemMeta = backButton.getItemMeta();
+        backButtonItemMeta.displayName(MiniMessage.miniMessage().deserialize(
                 "<red>Go back"
         ).decoration(TextDecoration.ITALIC, false));
 
-        item.setItemMeta(meta);
+        backButton.setItemMeta(backButtonItemMeta);
 
         SGButtonListener listener = event -> {
             Player player = (Player) event.getWhoClicked();
@@ -173,7 +194,7 @@ public class CustomRecipesManager {
             player.openInventory(this.getRecipeMenu());
         };
 
-        SGButton back = new SGButton(item).withListener(listener);
+        SGButton back = new SGButton(backButton).withListener(listener);
 
         this.RecipeMenu = plugin.spiGUI().create("&8Recipes", 3);
 
@@ -291,20 +312,17 @@ public class CustomRecipesManager {
 
 
 
-        this.RecipeMenu.setButton(12, new SGButton(craftingTable)
-                .withListener(event -> {
+        this.RecipeMenu.setButton(12, new SGButton(craftingTable).withListener(event -> {
                     Player player = (Player) event.getWhoClicked();
                     player.playSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1.0F, 1.0F);
                     player.openInventory(craftingMenu.getInventory());
                 }));
-        this.RecipeMenu.setButton(13, new SGButton(brewingStand)
-                .withListener(event -> {
+        this.RecipeMenu.setButton(13, new SGButton(brewingStand).withListener(event -> {
                     Player player = (Player) event.getWhoClicked();
                     player.playSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1.0F, 1.0F);
                     player.openInventory(potionMenu.getInventory());
                 }));
-        this.RecipeMenu.setButton(14, new SGButton(furnace)
-                .withListener(event -> {
+        this.RecipeMenu.setButton(14, new SGButton(furnace).withListener(event -> {
                     Player player = (Player) event.getWhoClicked();
                     player.playSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1.0F, 1.0F);
                     player.openInventory(furnaceMenu.getInventory());
@@ -318,7 +336,6 @@ public class CustomRecipesManager {
     public Inventory getRecipeMenu() {
         return this.RecipeMenu.getInventory();
     }
-
 
     public void addShapedRecipe(String keyName, ItemStack result, List<Material> materials) {
 
