@@ -22,7 +22,11 @@ public class InventorySpy {
 
         CommandAPICommand enderchest = new CommandAPICommand("enderchest")
                 .withArguments(new PlayerArgument("target").replaceSuggestions(
-                        ArgumentSuggestions.strings(playerNames)))
+                        ArgumentSuggestions.strings(
+                                plugin.getServer().getOnlinePlayers().stream()
+                                        .map(Player::getName)
+                                        .collect(Collectors.toList())
+                        )))
                 .executesPlayer((player, args) -> {
                     Player target = (Player) args.get(0);
                     if (target == null) return;
@@ -31,7 +35,11 @@ public class InventorySpy {
 
         CommandAPICommand inventory = new CommandAPICommand("inventory")
                 .withArguments(new PlayerArgument("target").replaceSuggestions(
-                        ArgumentSuggestions.strings(playerNames)))
+                        ArgumentSuggestions.strings(
+                                plugin.getServer().getOnlinePlayers().stream()
+                                        .map(Player::getName)
+                                        .collect(Collectors.toList())
+                        )))
                 .executesPlayer((player, args) -> {
                     Player target = (Player) args.get(0);
                     if (target == null) return;
