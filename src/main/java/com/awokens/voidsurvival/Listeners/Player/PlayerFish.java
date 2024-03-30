@@ -6,6 +6,7 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -37,6 +38,10 @@ public class PlayerFish implements Listener {
         }
 
         if (state != PlayerFishEvent.State.CAUGHT_FISH) return;
+
+        player.playerListName(MiniMessage.miniMessage().deserialize(
+                "<gradient:#1A75D3:#1C87F6:#1A75D3>\uD83C\uDFA3 " + player.getStatistic(Statistic.FISH_CAUGHT) + " " + player.getName()
+        ));
 
         Location head = player.getEyeLocation();
         Vector direction = head.getDirection();

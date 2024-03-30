@@ -4,10 +4,7 @@ import com.awokens.voidsurvival.VoidSurvival;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,7 +42,9 @@ public class PlayerJoin implements Listener {
 
         player.sendPlayerListHeader(header);
         player.sendPlayerListFooter(footer);
-        player.playerListName(Component.text(player.getName()));
+        player.playerListName(MiniMessage.miniMessage().deserialize(
+                "<gradient:#1A75D3:#1C87F6:#1A75D3>\uD83C\uDFA3 " + player.getStatistic(Statistic.FISH_CAUGHT) + " " + player.getName()
+        ));
 
         String welcome_message;
         if (player.hasPlayedBefore()) {
