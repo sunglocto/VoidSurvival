@@ -14,12 +14,6 @@ import java.util.stream.Collectors;
 public class InventorySpy {
     public InventorySpy(VoidSurvival plugin) {
 
-        Collection<String> playerNames = new ArrayList<>();
-
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            playerNames.add(player.getName());
-        }
-
         CommandAPICommand enderchest = new CommandAPICommand("enderchest")
                 .withArguments(new PlayerArgument("target").replaceSuggestions(
                         ArgumentSuggestions.strings(
