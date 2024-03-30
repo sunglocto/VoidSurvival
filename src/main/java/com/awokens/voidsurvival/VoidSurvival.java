@@ -39,7 +39,6 @@ public final class VoidSurvival extends JavaPlugin implements Listener {
         return configManager;
     }
     public SpiGUI spiGUI() { return spiGUI; }
-
     @Override
     public void onLoad() {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).shouldHookPaperReload(true));
