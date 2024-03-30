@@ -43,7 +43,7 @@ public class PlayerJoin implements Listener {
         player.sendPlayerListHeader(header);
         player.sendPlayerListFooter(footer);
         player.playerListName(MiniMessage.miniMessage().deserialize(
-                "<gradient:#1A75D3:#1C87F6:#1A75D3>\uD83C\uDFA3 " + player.getStatistic(Statistic.FISH_CAUGHT) + " " + player.getName()
+                "<gradient:#1A75D3:#1C87F6:#1A75D3>\uD83C\uDFA3 " + player.getStatistic(Statistic.FISH_CAUGHT) + " <white>" + player.getName()
         ));
 
         String welcome_message;
