@@ -71,9 +71,9 @@ public class GodVillager implements Listener {
 
         Random rand = new Random();
 
-        int oxidizedCopper = rand.nextInt(50 - 20 + 1) + 20;
-        int phantomMembrane = rand.nextInt(50 - 20 + 1) + 20;
-        int nautilusShell = rand.nextInt(32 - 16 + 1) + 16;
+        int oxidizedCopper = rand.nextInt(32 - 20 + 1) + 20;
+        int phantomMembrane = rand.nextInt(16 - 8 + 1) + 8;
+        int nautilusShell = rand.nextInt(16 - 8 + 1) + 8;
         int emeraldBlock = rand.nextInt(32 - 16 + 1) + 16;
 
         String nbtString = "{VillagerData:{type:plains,profession:nitwit,level:99},Offers:{Recipes:["
@@ -96,10 +96,12 @@ public class GodVillager implements Listener {
                 "<dark_gray>God Villager</dark_gray>"
         ).decoration(TextDecoration.ITALIC, false));
 
-        int min = 20;
-        int max = 100;
+        int min = 1800;
+        int max = 3600;
         int time = rand.nextInt((max - min) + 1) + min;
         villager.setConversionTime(time);
+        villager.setCustomNameVisible(false);
+
 
     }
 }
