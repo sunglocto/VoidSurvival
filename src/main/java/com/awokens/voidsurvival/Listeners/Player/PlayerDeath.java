@@ -33,17 +33,17 @@ public class PlayerDeath implements Listener {
             case FALL -> "fall damage";
             case FIRE -> "fire";
             case LAVA -> "lava";
-            case VOID -> "falling into the abyss";
+            case VOID -> "the void";
             case BLOCK_EXPLOSION -> "an explosion";
             case KILL, CONTACT, ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, ENTITY_EXPLOSION, PROJECTILE -> {
                 Entity attacker = cause.getDamageSource().getCausingEntity();
 
                 if (attacker == null) {
-                    yield "an unknown entity";
+                    yield "an unknown mob";
                 }
 
                 if (attacker.getType() == EntityType.PLAYER) {
-                    yield "a " + attacker.getName().toLowerCase();
+                    yield "a " + attacker.getName();
                 }
 
                 if (attacker instanceof Projectile projectile) {
@@ -60,7 +60,7 @@ public class PlayerDeath implements Listener {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendActionBar(MiniMessage.miniMessage().deserialize(
-                    "<gradient:#84D0FC:#ABDDFA:#84D0FC>" + victim.getName() + " has died by " + reason
+                    "<gradient:#84D0FC:#ABDDFA:#84D0FC>" + victim.getName() + " died to " + reason
             ));
         }
     }
